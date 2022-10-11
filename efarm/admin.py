@@ -8,3 +8,6 @@ admin.site.register(CountyAgriOfficer)
 admin.site.register(CentreManager)
 admin.site.register(Invoice)
 admin.site.register(Produce)
+admin.site.register(Buyer)
+admin.site.register(Blog)
+
