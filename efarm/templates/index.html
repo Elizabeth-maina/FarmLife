@@ -50,11 +50,11 @@
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Total Buyers
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Total Centres
                             </div>
                             <div class="row no-gutters align-items-center">
                                 <div class="col-auto">
-                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{ total_buyers}}</div>
+                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{ total_centres }}</div>
                                 </div>
                                 <div class="col">
                                    
@@ -97,7 +97,7 @@
             <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">Annual Sales</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Annual Sales By Centre</h6>
                 </div>
                 <!-- Card Body -->
                 <div class="card-body">
@@ -106,8 +106,8 @@
                         new Chart(document.getElementById("bar-chart"), {
                             type: 'bar',
                             data: {
-                              labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul","Aug", "Sep","Oct", "Nov", "Dec"],
-                              datasets: [
+                                labels: [{% for centre in centres %} '{{centre.name}}', {% endfor %}],
+                                datasets: [
                                 {
                                   label: "Sales (millions)",
                                   backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850","#C0392B","#F4D03F","#6C3483","#212F3D","#D35400","#EC407A","#33FFFF"],
@@ -143,12 +143,12 @@
                         new Chart(document.getElementById("doughnut-chart"), {
                             type: 'doughnut',
                             data: {
-                                labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul","Aug", "Sep","Oct", "Nov", "Dec"],
+                                labels: [{% for produce in produce %} '{{produce.name}}', {% endfor %}],
                                 datasets: [
                                 {
                                   label: "Sales (millions)",
-                                  backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850","#C0392B","#F4D03F","#6C3483","#212F3D","#D35400","#EC407A","#33FFFF"],
-                                  data: [2478,5267,734,784,433]
+                                  backgroundColor: ["#212F3D","#D35400","#C0392B","#F4D03F","#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850","#6C3483","#EC407A","#33FFFF"],
+                                  data: [2478,5267]
                                 }
                               ]
                             },

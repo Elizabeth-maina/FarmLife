@@ -1,3 +1,6 @@
+from email.policy import default
+from itertools import count
+from unicodedata import name
 from django.urls import reverse
 from django.db import models
 import uuid
@@ -12,6 +15,14 @@ class County(models.Model):
 
     def __str__(self):
         return self.name
+
+class Centre(models.Model):
+    name = models.CharField(max_length=254)
+    county = models.ForeignKey(County, on_delete=models.CASCADE)
+    phone = models.CharField(max_length=254)
+    
+    def __str__(self):
+        return self.name   
     
 
 class Farmer(models.Model):
@@ -27,7 +38,7 @@ class Farmer(models.Model):
     email = models.EmailField()
     adress = models.CharField(max_length=254)
     phone = models.CharField(max_length=15)
-    county = models.ForeignKey(County, on_delete=models.CASCADE)
+    centre = models.ForeignKey(Centre, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.first_name
@@ -37,33 +48,13 @@ class Farmer(models.Model):
         full_name = self.first_name + ' ' + self.second_name
 
         return full_name
-class Buyer(models.Model):
-    first_name = models.CharField(max_length=254)
-    second_name = models.CharField(max_length=254)
-    email = models.EmailField()
-    adress = models.CharField(max_length=254)
-    phone = models.CharField(max_length=15)
-    county = models.CharField(max_length=254)
-
-    def __str__(self):
-        return self.first_name
-
-    @property
-    def get_name(self):
-        full_name = self.first_name + ' ' + self.second_name
-
-        return full_name
-
-
-
-
 class CentreManager(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=254)
     second_name = models.CharField(max_length=254)
     phone = models.CharField(max_length=15)
     email = models.EmailField()
-    county = models.ForeignKey(County, on_delete=models.CASCADE)
+    centre = models.ForeignKey(Centre, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.first_name
@@ -141,7 +132,7 @@ class Invoice(models.Model):
         ('Mpesa', 'Mpesa'),
     )
 
-    customer = models.ForeignKey(Farmer, on_delete=models.CASCADE)
+    customer = models.ForeignKey(User, on_delete=models.CASCADE)
     date_created = models.DateField(auto_now_add=True, null=True)
     invoice_no = models.AutoField(primary_key=True)
     invoice_id = models.UUIDField(default=uuid.uuid4, editable=False)
@@ -149,13 +140,13 @@ class Invoice(models.Model):
     quantity = models.IntegerField()
     price = models.DecimalField(decimal_places=2, max_digits=10)
     discount = models.DecimalField(decimal_places=2, max_digits=10)
-    VAT = models.DecimalField(decimal_places=2, max_digits=10)
+    VAT = models.DecimalField(decimal_places=2, max_digits=10, default=16)
     payment_method = models.CharField(max_length=254, choices=payment_choices)
     status = models.CharField(max_length=254, choices=status_options)
     
     @property
     def get_total(self):
-        total = (self.price*self.quantity)-(self.discount+self.VAT)
+        total = (self.price*self.quantity)-(self.discount+(self.price*self.quantity*(self.VAT/100)))
         return total
     
 class Blog(models.Model):
@@ -171,6 +162,6 @@ class Blog(models.Model):
         except:
             url = ''
         return url
-
+        
 
 

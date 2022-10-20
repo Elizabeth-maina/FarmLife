@@ -1,56 +1,117 @@
-(function($) {
-  "use strict"; // Start of use strict
+var cartTotal = document.getElementById("cart-total");
 
-  // Toggle the side navigation
-  $("#sidebarToggle, #sidebarToggleTop").on('click', function(e) {
-    $("body").toggleClass("sidebar-toggled");
-    $(".sidebar").toggleClass("toggled");
-    if ($(".sidebar").hasClass("toggled")) {
-      $('.sidebar .collapse').collapse('hide');
-    };
-  });
+document.querySelectorAll(".update-cart").forEach((btnUpd) => {
+  btnUpd.addEventListener("click", () => {
+    var productId = btnUpd.dataset.product;
+    var productPrice = btnUpd.dataset.price;
+    var action = btnUpd.dataset.action;
 
-  // Close any open menu accordions when window is resized below 768px
-  $(window).resize(function() {
-    if ($(window).width() < 768) {
-      $('.sidebar .collapse').collapse('hide');
-    };
-    
-    // Toggle the side navigation when window is resized below 480px
-    if ($(window).width() < 480 && !$(".sidebar").hasClass("toggled")) {
-      $("body").addClass("sidebar-toggled");
-      $(".sidebar").addClass("toggled");
-      $('.sidebar .collapse').collapse('hide');
-    };
-  });
-
-  // Prevent the content wrapper from scrolling when the fixed side navigation hovered over
-  $('body.fixed-nav .sidebar').on('mousewheel DOMMouseScroll wheel', function(e) {
-    if ($(window).width() > 768) {
-      var e0 = e.originalEvent,
-        delta = e0.wheelDelta || -e0.detail;
-      this.scrollTop += (delta < 0 ? 1 : -1) * 30;
-      e.preventDefault();
-    }
-  });
-
-  // Scroll to top button appear
-  $(document).on('scroll', function() {
-    var scrollDistance = $(this).scrollTop();
-    if (scrollDistance > 100) {
-      $('.scroll-to-top').fadeIn();
+    if (user == "AnonymousUser") {
+      addCookieItem(
+        {
+          id: productId,
+          price: productPrice,
+        },
+        action
+      );
     } else {
-      $('.scroll-to-top').fadeOut();
+      updateUserOrder(productId, action);
     }
   });
+});
 
-  // Smooth scrolling using jQuery easing
-  $(document).on('click', 'a.scroll-to-top', function(e) {
-    var $anchor = $(this);
-    $('html, body').stop().animate({
-      scrollTop: ($($anchor.attr('href')).offset().top)
-    }, 1000, 'easeInOutExpo');
-    e.preventDefault();
+const updateUserOrder = (productId, action) => {
+  var url = "/update_item/";
+
+  fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRFToken": csrftoken,
+    },
+    body: JSON.stringify({
+      productId: productId,
+      action: action,
+    }),
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      cartTotal.innerHTML = data.cartTotal;
+      var row = document.getElementById(`row${productId}`);
+      var totalItems = document.getElementById(`totalItems`);
+      var totalValue = document.getElementById(`totalValue`);
+
+      if (row) {
+        if (data.productQuantity <= 0) {
+          row.remove();
+        } else {
+          var cartItemQuantity = document.getElementById(`q${productId}`);
+          var cartItemTotalPrice = document.getElementById(`t${productId}`);
+
+          cartItemQuantity.innerHTML = data.productQuantity;
+          cartItemTotalPrice.innerHTML = `$${data.orderItemTotalValue.toFixed(
+            2
+          )}`;
+        }
+        totalItems.innerHTML = data.cartTotal;
+        totalValue.innerHTML = `$${data.orderTotalValue.toFixed(2)}`;
+      }
+      if (action == "buyNow") {
+        window.location.href = "/produce/cart/";
+      }
+    });
+};
+
+function addCookieItem(product, action) {
+  if (action == "add" || action == "buyNow") {
+    if (cart[product.id] == undefined) {
+      cart[product.id] = { quantity: 1, price: product.price };
+      console.log(cart);
+    } else {
+      cart[product.id]["quantity"] += 1;
+    }
+  }
+
+  if (action == "remove") {
+    cart[product.id]["quantity"] -= 1;
+
+    if (cart[product.id]["quantity"] <= 0) {
+      console.log("Item should be deleted");
+      delete cart[product.id];
+      row.remove();
+    }
+  }
+  document.cookie = "cart=" + JSON.stringify(cart) + ";domain=;path=/";
+
+  totalItems = 0;
+  totalValue = 0;
+
+  Object.keys(cart).forEach((k) => {
+    totalItems += cart[k]["quantity"];
+    totalValue += parseFloat(cart[k]["price"]) * cart[k]["quantity"];
   });
+  cartTotal.innerHTML = totalItems;
 
-})(jQuery); // End of use strict
+  var row = document.getElementById(`row${product.id}`);
+  if (row) {
+    var cartItemQuantity = document.getElementById(`q${product.id}`);
+    var cartItemTotalPrice = document.getElementById(`t${product.id}`);
+    var totalItemsE = document.getElementById(`totalItems`);
+    var totalValueE = document.getElementById(`totalValue`);
+
+    totalItemsE.innerHTML = totalItems;
+    totalValueE.innerHTML = `$${totalValue.toFixed(2)}`;
+
+    cartItemQuantity.innerHTML = cart[product.id]["quantity"];
+    cartItemTotalPrice.innerHTML = `$${(
+      product.price * parseFloat(cart[product.id]["quantity"])
+    ).toFixed(2)}`;
+  }
+
+  if (action == "buyNow") {
+    //buyNow action (redirects to cart)
+    window.location.href = "/produce/cart/";
+  }
+}

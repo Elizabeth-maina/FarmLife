@@ -8,6 +8,9 @@ from django.contrib import messages
 from .models import *
 from .forms import *
 from .filters import *
+from .utils import *
+from django.http import JsonResponse
+import json
 from .decorators import allowed_users
 
 
@@ -21,7 +24,7 @@ def Login(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('home')
+            return redirect('blog')
         else:
             messages.info(request, 'Incorrect Username or Password!')
     context = {}
@@ -47,6 +50,11 @@ def home(request):
     buyers = Buyer.objects.all()
     total_buyers = buyers.count()
     centre_managers = CentreManager.objects.all()
+    centres = Centre.objects.all()
+    for centre in centres:
+        print(centre.name)
+
+    total_centres = Centre.objects.all().count()
     total_centre_managers = centre_managers.count()
     
     #sales
@@ -96,6 +104,9 @@ def home(request):
                'mon_total': mon_total,
                'annual_total':annual_total,
                'group': group,
+               'centres':centres,
+               "total_centres":total_centres,
+               "produce": produce
                
                }
     return render(request, 'index.html', context)
@@ -187,6 +198,7 @@ def addCounty(request):
 
 
 @login_required(login_url='login')
+@allowed_users(allowed_roles=['county-agri-officer'])
 def CentreManagerList(request):
     centre_manager = CentreManager.objects.all()
 
@@ -201,7 +213,7 @@ def CentreManagerList(request):
     return render(request, 'users/centre_manager_list.html', context)
 
 @login_required(login_url='login')
-@allowed_users(allowed_roles=['center-manager'])
+@allowed_users(allowed_roles=['county-agri-officer'])
 def addCentreManager(request):
     form = CentreManagerForm()
     if request.method == 'POST':

@@ -21,17 +21,17 @@
   <div class="col-lg-4">
     <div class="box-element product">
       <img
-        src="{{product.imageURL}}"
+        src="{% static produce.imageURL %}"
         alt=""
         class="thumbnail"
         style="width:120px; height:120px;"
       />
-      <h6><strong>{{produce.name}}</strong></h6>
-      <p>{{produce.generic_name}}</p>
-      <p>{{produce.quantity}}</p>
-      <p>{{produce.farmer}}</p>
+      <h6><strong>Name {{produce.name}}</strong></h6>
+      <p>Generic Name: {{produce.generic_name}}</p>
+      <p>Quantity: {{produce.quantity}}</p>
+      <p>Farmer: {{produce.farmer}}</p>
       <hr />
-      <h4 style="float: right;">Kshs.{{produce.price|floatformat:2}}</h4>
+      <h4 style="float: right;">Amount/Unit: Kshs.{{produce.price|floatformat:2}}</h4>
     </div>
     <br>
   </div>

@@ -59,12 +59,8 @@
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        {% if group == "center-manager" %}
                         <a class="collapse-item" href="{% url 'add_farmer' %}">Add Farmers</a>
                         <a class="collapse-item" href="{% url 'farmers' %}">Farmers List</a>
-                        {% elif group == "county-officer" %}
-                        <a class="collapse-item" href="{% url 'farmers' %}">Farmers List</a>
-                        {% endif %}
                     </div>
                 </div>
             </li>
@@ -77,12 +73,8 @@
                 </a>
                 <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        {% if group == "center-manager" %}
                         <a class="collapse-item" href="{% url 'buyers' %}">Buyers List</a>
                         <a class="collapse-item" href="{% url 'add_buyer' %}">Add Buyers</a>
-                        {% elif group == "county-officer" %}
-                        <a class="collapse-item" href="{% url 'buyers' %}">Buyers List</a>
-                        {% endif %}
                     </div>
                 </div>
             </li>
@@ -97,12 +89,8 @@
                 <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        {% if group == "center-manager" %}
                         <a class="collapse-item" href="{% url 'counties' %}">Counties List</a>
                         <a class="collapse-item" href="{% url 'add_county' %}">Add County</a>
-                        {% elif group == "county-officer" %}
-                        <a class="collapse-item" href="{% url 'counties' %}">Counties List</a>
-                        {% endif%}
                     </div>
                 </div>
             </li>
@@ -117,12 +105,8 @@
                 </a>
                 <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        {% if group == "center-manager" %}
                         <a class="collapse-item" href="{% url 'centre_managers' %}">Center Manager List</a>
                         <a class="collapse-item" href="{% url 'add_centre_manager' %}">Add Center Manager</a>
-                        {% elif group == "county-officer" %}
-                        <a class="collapse-item" href="{% url 'centre_managers' %}">Center Manager List</a>
-                        {% endif %}
                     </div>
                 </div>
             </li>
@@ -135,12 +119,8 @@
                 </a>
                 <div id="collapsePage" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        {% if group == "center-manager" %}
                         <a class="collapse-item" href="{% url 'produce' %}">Produce List</a>
                         <a class="collapse-item" href="{% url 'add_produce' %}">Add Produce</a>
-                        {% elif group == "county-officer" %}
-                        <a class="collapse-item" href="{% url 'produce' %}">Produce List</a>
-                        {% endif %}
                     </div>
                 </div>
             </li>
@@ -152,12 +132,8 @@
                 </a>
                 <div id="collapsePage1" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        {% if group == "center-manager" %}
                         <a class="collapse-item" href="{% url 'invoices' %}">Invoice</a>
                         <a class="collapse-item" href="{% url 'add_invoice' %}">Add Payments</a>
-                        {% elif group == "county-officer" %}
-                        <a class="collapse-item" href="{% url 'invoices' %}">Invoice</a>
-                        {% endif %}
                     </div>
                 </div>
             </li>
@@ -169,12 +145,8 @@
                 </a>
                 <div id="collapsePage2" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        {% if group == "center-manager" %}
                         <a class="collapse-item" href="{% url 'blogs' %}">Info List</a>
                         <a class="collapse-item" href="{% url 'add_blog' %}">Add Info</a>
-                        {% elif group == "county-officer" %}
-                        <a class="collapse-item" href="{% url 'blogs' %}">Info List</a>
-                        {% endif %}
 
                     </div>
                 </div>

@@ -16,9 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-import efarm
-
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('efarm.urls'))
+    path('', include('store.urls')),
+    path('dashboard/', include('efarm.urls'))
 ]
