@@ -78,8 +78,20 @@
       <small>Paypal Options</small>
       <!-- Set up a container element for the button -->
       <div id="paypal-button-container"></div>
+      <hr>
+      {% for message in messages %}
+      {% if message %}
+      <div class="alert alert-{{message.tags}}">
+          {{ message }}
+      </div>
+      {% endif %}
+      {% endfor %}
+      <a href="{% url 'process_mpesa' %}" style="text-decoration:none">
+      <button type="button" class="btn btn-success btn-lg btn-block"><h3 style="color: white; text-decoration:none">LIPA NA MPESA</h3></button>
+      </a>
     </div>
   </div>
+  
 </div>
 
 <!-- paypal stuff -->
@@ -139,6 +151,17 @@
     })
     .render("#paypal-button-container");
 </script>
+
+<script>  
+  (function(d, s, id){
+     var js, mpesa = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "https://cdn.jsdelivr.net/gh/muaad/mpesa_button@master/src/button.min.js";
+     mpesa.parentNode.insertBefore(js, mpesa);
+   }(document, 'script', 'mpesa_btn_js'));
+</script>
+
 
 <script type="text/javascript">
   var total = "{{ order.get_cart_total }}";

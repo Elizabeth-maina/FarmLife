@@ -1,5 +1,5 @@
 {% extends 'store/main.html' %} {% load static %} {% block content %}
-<div class="container align-self-center">
+<div class="container align-self-center" style="color: white">
   <div class="main-body align-self-center">
     <ul class="list-group">
       <li class="list-group-item">
@@ -31,11 +31,11 @@
       </li>
     </ul>
     <hr />
-    <div>
-      <h3> payments </h3>
+    <div  style="color:red">
+      <h3  style="color: white"> payments </h3>
       <table class="table">
-        <thead>
-          <tr>
+        <thead  style="color: white">
+          <tr> 
             <th scope="col">Date</th>
             <th scope="col">Invoice ID</th>
             <th scope="col">Produce</th>
@@ -48,7 +48,7 @@
 
           </tr>
         </thead>
-        <tbody>
+        <tbody style="color: white">
           {% for invoice in invoices %}
           <tr>
             <td>{{invoice.date_created}}</td>
@@ -77,10 +77,10 @@
     <hr>
     <div>
     
-      <h3> Orders </h3>
+      <h3 style="color: white"> Orders </h3>
       <table class="table">
         <thead>
-          <tr>
+          <tr style="color: white">
             <th scope="col">#</th>
             <th scope="col">Transaction ID</th>
             <th scope="col">Date</th>
@@ -88,7 +88,7 @@
             <th scope="col">Products</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody  style="color: white">
           {% for order in orders %}
           {% if order.get_cart_items > 0 %}
           <tr>

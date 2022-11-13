@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     
     'crispy_forms',
     'django_filters',
+    'mpesa',
     
     'efarm',
     'store'
@@ -137,3 +138,16 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Mpesa configurations
+MPESA_CONFIG = {
+    'CONSUMER_KEY': 'G9rYdGAQNPAW8pSQIeLlOTGGGAAQGAR6',
+    'CONSUMER_SECRET': 'a1BoDCNHKs5z3AAT',
+    'CERTIFICATE_FILE': None,
+    'HOST_NAME': 'https://558d-41-90-187-109.ngrok.io',
+    'PASS_KEY': 'bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919',
+    'SAFARICOM_API': 'https://sandbox.safaricom.co.ke/',
+    'AUTH_URL': '/oauth/v1/generate?grant_type=client_credentials',
+    'SHORT_CODE': '174379',
+    'TILL_NUMBER': None,
+}

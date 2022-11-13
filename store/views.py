@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseRedirect
 from .models import *
 import json
+import requests
+from django.contrib import messages
 import uuid
 from .utils import *
 from django.contrib.auth.models import User
@@ -99,7 +101,6 @@ def updateItem(request):
 
 def processOrder(request):
     data = json.loads(request.body)
-
     if request.user.is_authenticated:
         customer = request.user
         order, created = Order.objects.get_or_create(customer=customer, complete=False)
@@ -151,6 +152,23 @@ def confirmPayment(request):
         return HttpResponse(status=200)
     else:
         return HttpResponse(status=403)
+    
+def mpesaPaymnet(request):
+    user = request.user
+    amount = 1000
+    phone_number = 254725792973
+    try:
+        mpesa = requests.post("http://127.0.0.1:8000/mpesa/submit/", data={"phone_number": phone_number,"amount": amount}) 
+        messages.success(request, "Check Your Phone and Input your Mpesa PIN to make payment.")
+        response = HttpResponseRedirect('checkout')
+        response.delete_cookie("cart")
+    except:
+        messages.error("Something went wrong")
+    
+    context = {}
+ 
+    return redirect('checkout')
+
 
 def profile(request):  # /profile
     data = cartData(request)
